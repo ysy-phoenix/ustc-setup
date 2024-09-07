@@ -16,10 +16,10 @@ source ~/.bashrc
 
 # Create directories, download, and install ncurses
 mkdir -p ~/tools/ncurses && cd ~/tools/ncurses
-wget http://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.5.tar.gz
+wget https://mirrors.tuna.tsinghua.edu.cn/gnu/ncurses/ncurses-6.5.tar.gz
 tar -xzvf ncurses-6.5.tar.gz
 cd ncurses-6.5
-./configure --prefix="$HOME/ncurses" --with-shared --without-debug --enable-widec
+./configure --prefix="$HOME/ncurses" --with-shared --with-termlib --without-debug --enable-widec
 make && make install
 
 # Create directories, download, and install zsh
@@ -42,9 +42,32 @@ sh -c "$(wget -O- https://gh-proxy.com/https://raw.githubusercontent.com/ohmyzsh
 # Install zsh plugins
 git clone https://gh-proxy.com/https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://gh-proxy.com/https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+git clone https://github.com/wting/autojump.git ~/tools/autojump
+cd ~/tools/autojump && ./install.py
 
 # Update .zshrc to include plugins
-sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' ~/.zshrc
+sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting autojump)/g' ~/.zshrc
+
+# p10k
+git clone --depth=1 https://gh-proxy.com/https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+sed -i 's/^ZSH_THEME=".*"/ZSH_THEME="powerlevel10k\/powerlevel10k"/' ~/.zshrc
 
 # Source .zshrc to update current session
 source ~/.zshrc
+
+# conda
+cd ~/tools
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh -b
+
+~/miniconda3/bin/conda init zsh
+~/miniconda3/bin/conda init bash
+
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/msys2/
+
+conda config --set show_channel_urls yes
+
+conda clean -i
