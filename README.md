@@ -7,7 +7,7 @@
 
 - [github 代理](https://gh-proxy.com/)
 - [huggingface 镜像](https://hf-mirror.com/)
-- 安装 zsh：见 `init.sh
+- 安装 zsh：见 `init.sh`
 
 ## 服务器连接
 
@@ -30,3 +30,5 @@ Host [alias]
     User [username]
     IdentityFile [path/to/private_key]
 ```
+
+> A100 服务器存在更多问题，例如没有 cmake，nvtop 等，需从源码编译安装。
